@@ -246,12 +246,15 @@ function handleBaziCalculation(e) {
     const originalText = submitBtn.html();
     submitBtn.html('<span class="loading"></span> 算命中...').prop('disabled', true);
     
+    console.log('發送八字數據:', baziData);
+    
     $.ajax({
         url: `${APP_CONFIG.API_BASE_URL}/fortune/bazi`,
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(baziData),
         success: function(response) {
+            console.log('八字響應:', response);
             if (response.success) {
                 displayBaziResult(response);
                 showAlert('八字算命完成！', 'success');
@@ -260,8 +263,8 @@ function handleBaziCalculation(e) {
             }
         },
         error: function(xhr, status, error) {
-            console.error('八字算命錯誤:', error);
-            showAlert('算命失敗，請檢查網絡連接', 'danger');
+            console.error('八字算命錯誤:', error, xhr.responseText);
+            showAlert('算命失敗：' + (xhr.responseJSON?.message || error), 'danger');
         },
         complete: function() {
             submitBtn.html(originalText).prop('disabled', false);
@@ -287,12 +290,15 @@ function handleNameFortune(e) {
     const originalText = submitBtn.html();
     submitBtn.html('<span class="loading"></span> 算命中...').prop('disabled', true);
     
+    console.log('發送姓名數據:', nameData);
+    
     $.ajax({
         url: `${APP_CONFIG.API_BASE_URL}/fortune/name`,
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(nameData),
         success: function(response) {
+            console.log('姓名響應:', response);
             if (response.success) {
                 displayNameFortuneResult(response);
                 showAlert('姓名算命完成！', 'success');
@@ -301,8 +307,8 @@ function handleNameFortune(e) {
             }
         },
         error: function(xhr, status, error) {
-            console.error('姓名算命錯誤:', error);
-            showAlert('算命失敗，請檢查網絡連接', 'danger');
+            console.error('姓名算命錯誤:', error, xhr.responseText);
+            showAlert('算命失敗：' + (xhr.responseJSON?.message || error), 'danger');
         },
         complete: function() {
             submitBtn.html(originalText).prop('disabled', false);
@@ -325,10 +331,14 @@ function handleDailyFortune(e) {
     const originalText = submitBtn.html();
     submitBtn.html('<span class="loading"></span> 查詢中...').prop('disabled', true);
     
+    console.log('查詢每日運勢 - 用戶ID:', currentUser.userId, '生肖:', zodiac);
+    console.log('請求URL:', `${APP_CONFIG.API_BASE_URL}/fortune/daily/${currentUser.userId}/${zodiac}`);
+    
     $.ajax({
         url: `${APP_CONFIG.API_BASE_URL}/fortune/daily/${currentUser.userId}/${zodiac}`,
         method: 'GET',
         success: function(response) {
+            console.log('每日運勢響應:', response);
             if (response.success) {
                 displayDailyFortuneResult(response);
                 showAlert('每日運勢查詢完成！', 'success');
@@ -337,8 +347,8 @@ function handleDailyFortune(e) {
             }
         },
         error: function(xhr, status, error) {
-            console.error('每日運勢錯誤:', error);
-            showAlert('查詢失敗，請檢查網絡連接', 'danger');
+            console.error('每日運勢錯誤:', error, xhr.responseText);
+            showAlert('查詢失敗：' + (xhr.responseJSON?.message || error), 'danger');
         },
         complete: function() {
             submitBtn.html(originalText).prop('disabled', false);

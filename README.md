@@ -194,8 +194,8 @@ CORS_ALLOWED_ORIGINS=https://your-domain.com
 ```javascript
 // 直接編輯 frontend/js/env.js
 window.ENV = {
-    API_BASE_URL: 'https://api.your-domain.com/api',
-    CNCHAR_API_URL: 'https://cnchar.your-domain.com',
+    API_BASE_URL: 'https://fate-compass.zeabur.app/api',
+    CNCHAR_API_URL: 'https://cnchar.zeabur.app',
     NODE_ENV: 'production'
 };
 
@@ -279,25 +279,4 @@ docker-compose restart fate-compass-backend
 # 重啟所有服務
 ./restart-system.sh
 ```
-
-## 🎯 開發說明
-
-本項目專為技術面試設計，展示以下技術能力：
-
-✅ **前後端分離架構**  
-✅ **微服務設計模式**  
-✅ **Docker容器化部署**  
-✅ **Oracle資料庫應用**  
-✅ **Spring全家桶整合**  
-✅ **第三方庫集成**  
-✅ **RESTful API設計**  
-✅ **現代化前端開發**  
-
-## 📝 測試數據
-
-系統已內建測試數據，包括：
-- 5個測試用戶帳號
-- 10條算命歷史記錄
-- 完整的姓名筆劃測試案例
-
-測試帳號：`test1@example.com` / 密碼：`password` 
+ 

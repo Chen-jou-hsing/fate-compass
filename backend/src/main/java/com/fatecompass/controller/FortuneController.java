@@ -82,12 +82,12 @@ public class FortuneController {
      * 姓名算命
      */
     @PostMapping("/name")
-    public ResponseEntity<Map<String, Object>> calculateNameFortune(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> calculateNameFortune(@RequestBody Map<String, Object> request) {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            Long userId = Long.valueOf(request.get("userId"));
-            String fullName = request.get("fullName");
+            Long userId = Long.valueOf(request.get("userId").toString());
+            String fullName = (String) request.get("fullName");
             
             if (fullName == null || fullName.trim().isEmpty()) {
                 response.put("success", false);
