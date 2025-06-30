@@ -1,12 +1,37 @@
 # 算命網站 (Fate Compass)
 
+[![Version](https://img.shields.io/badge/version-v1.0.0-blue.svg)](https://github.com/your-username/fate-compass)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](docker-compose.yml)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot)
+
 一個基於微服務架構的現代化算命網站，展示前後端分離、Docker部署和第三方庫集成技術。
+
+## 📋 版本資訊
+
+**當前版本**: v1.0.0  
+**發布日期**: 2025-06-30
+
+### 🎉 v1.0.0 新功能
+- ✅ **環境變數支援**: 前後端完整支援環境變數配置，適合外網部署
+- ✅ **生產環境配置**: 新增 `application-production.yml` 生產環境優化配置
+- ✅ **動態API配置**: 前端自動檢測環境並配置正確的API地址
+- ✅ **安全性增強**: JWT密鑰、資料庫密碼等敏感資訊支援環境變數注入
+- ✅ **CORS動態配置**: 支援多域名動態CORS配置
+- ✅ **Docker優化**: 容器化部署與環境變數完美集成
+- ✅ **文檔完善**: 新增詳細的環境變數配置指南
+
+### 🔧 技術改進
+- 前端 `env.js` 自動環境檢測
+- 後端多Profile配置支援
+- 生產環境日誌優化
+- 安全性配置增強
 
 ## 🏗 系統架構
 
 本項目採用微服務架構，包含以下服務：
 - **Oracle Database** - 主要資料庫
-- **cnchar微服務** - 負責繁體中文筆劃計算
+- **cnchar微服務** - 負責中文筆劃計算
 - **Java後端** - 核心業務邏輯API
 - **前端** - 用戶界面
 
@@ -98,7 +123,7 @@ fate-compass/
 - **Docker** 和 **Docker Compose**
 - **Git** 
 
-### 一鍵啟動
+### 一鍵啟動 (本地開發)
 ```bash
 # 克隆項目
 git clone <repository-url>
@@ -112,6 +137,27 @@ docker-compose up -d
 
 # 檢查服務狀態
 docker-compose ps
+```
+
+### 生產環境部署
+```bash
+# 1. 設定環境變數
+cp ENV_CONFIG.md .env
+nano .env  # 編輯生產環境配置
+
+# 2. 設定後端生產配置
+export SPRING_PROFILES_ACTIVE=production
+export DATABASE_URL=jdbc:oracle:thin:@your-prod-oracle:1521:PRODDB
+export DATABASE_PASSWORD=your_secure_password
+export JWT_SECRET=your_super_secure_jwt_secret
+export CORS_ALLOWED_ORIGINS=https://your-domain.com
+
+# 3. 更新前端API配置
+# 編輯 frontend/js/env.js 或在建置時注入
+# window.ENV.API_BASE_URL = 'https://api.your-domain.com/api'
+
+# 4. 啟動生產服務
+docker-compose -f docker-compose.production.yml up -d
 ```
 
 ### 系統重啟
@@ -128,6 +174,40 @@ docker-compose ps
 | **後端API** | http://localhost:8080/api | RESTful API服務 |
 | **cnchar服務** | http://localhost:3001 | 筆劃計算API |
 | **Oracle資料庫** | localhost:1522 | 資料庫連接 |
+
+## ⚙️ 環境變數配置
+
+本項目完整支援環境變數配置，適合各種部署環境。詳細配置請參考 [ENV_CONFIG.md](ENV_CONFIG.md)。
+
+### 🔧 快速配置
+
+**後端環境變數**:
+```bash
+DATABASE_URL=jdbc:oracle:thin:@your-oracle:1521:XE
+DATABASE_PASSWORD=your_secure_password
+JWT_SECRET=your_jwt_secret
+CNCHAR_SERVICE_URL=http://your-cnchar:3001
+CORS_ALLOWED_ORIGINS=https://your-domain.com
+```
+
+**前端環境配置**:
+```javascript
+// 直接編輯 frontend/js/env.js
+window.ENV = {
+    API_BASE_URL: 'https://api.your-domain.com/api',
+    CNCHAR_API_URL: 'https://cnchar.your-domain.com',
+    NODE_ENV: 'production'
+};
+
+
+```
+
+### 🌐 外網部署要點
+
+1. **CORS配置**: 確保 `CORS_ALLOWED_ORIGINS` 包含你的前端域名
+2. **API地址**: 前端會自動檢測環境並設定正確的API地址
+3. **安全性**: 生產環境務必更換JWT密鑰和資料庫密碼
+4. **HTTPS**: 建議生產環境使用HTTPS協議
 
 ## 📡 API文檔
 

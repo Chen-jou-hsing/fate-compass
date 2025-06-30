@@ -18,17 +18,10 @@ spring:
     password: ${DB_PASSWORD:oracle123}
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
-      maximum-pool-size: 5
-      minimum-idle: 2
-      connection-timeout: 60000
-      idle-timeout: 300000
-      max-lifetime: 1200000
-      validation-timeout: 5000
-      leak-detection-threshold: 60000
-      connection-init-sql: SELECT 1 FROM DUAL
-      data-source-properties:
-        oracle.net.CONNECT_TIMEOUT: 60000
-        oracle.jdbc.ReadTimeout: 60000
+      maximum-pool-size: 3
+      minimum-idle: 1
+      connection-timeout: 30000
+      idle-timeout: 600000
     
   # JPA Configuration for Oracle with retry
   jpa:

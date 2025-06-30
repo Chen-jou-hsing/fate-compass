@@ -98,9 +98,13 @@ public class FortuneService {
     public Map<String, Object> calculateNameFortune(User user, String fullName) {
         Map<String, Object> result = new HashMap<>();
         
+        System.out.println("🎯 開始姓名算命 - 輸入姓名: " + fullName);
+        
         // 計算筆劃數
         int totalStrokes = calculateStrokes(fullName);
         String element = FIVE_ELEMENTS[totalStrokes % 5];
+        
+        System.out.println("🎯 五行計算 - 筆劃: " + totalStrokes + ", 五行: " + element);
         
         // 生成姓名分析
         String analysis = generateNameAnalysis(fullName, totalStrokes, element);
@@ -112,6 +116,9 @@ public class FortuneService {
         result.put("element", element);
         result.put("analysis", analysis);
         result.put("score", score);
+        
+        System.out.println("🎯 最終結果 - 筆劃數: " + result.get("totalStrokes"));
+        System.out.println("🎯 完整結果: " + result);
         
         // 保存算命記錄
         saveFortuneHistory(user, FortuneHistory.FortuneType.NAME, fullName, analysis, score);
@@ -414,13 +421,19 @@ public class FortuneService {
      * 強制只使用cnchar庫，不使用備用方案
      */
     private int calculateStrokes(String name) {
-        // 強制只使用cnchar微服務，絕不使用備用方案
-        int strokes = cncharStrokeService.calculateTotalStrokes(name);
-        System.out.println("===== cnchar計算結果 =====");
-        System.out.println("姓名: " + name);
-        System.out.println("筆劃數: " + strokes);
-        System.out.println("=========================");
-        return strokes;
+        // 使用cnchar微服務
+        try {
+            int strokes = cncharStrokeService.calculateTotalStrokes(name);
+            System.out.println("===== 🔍 DEBUG: cnchar計算結果 =====");
+            System.out.println("姓名: " + name);
+            System.out.println("cnchar返回筆劃數: " + strokes);
+            System.out.println("===================================");
+            return strokes;
+        } catch (Exception e) {
+            System.err.println("❌ cnchar服務調用失敗: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("cnchar服務失敗: " + e.getMessage(), e);
+        }
     }
     
 

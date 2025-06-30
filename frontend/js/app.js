@@ -1,7 +1,7 @@
-// 應用配置
+// 應用配置 - 支援環境變數配置
 const APP_CONFIG = {
-    API_BASE_URL: 'http://localhost:8080/api',
-    // API_BASE_URL: 'http://localhost:8080/api', // 開發環境
+    API_BASE_URL: window.ENV?.API_BASE_URL || 'http://localhost:8080/api',
+    CNCHAR_API_URL: window.ENV?.CNCHAR_API_URL || 'http://localhost:3001',
     USER_KEY: 'fate_compass_user'
 };
 
