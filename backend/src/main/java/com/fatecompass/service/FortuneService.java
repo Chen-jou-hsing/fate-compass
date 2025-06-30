@@ -85,9 +85,9 @@ public class FortuneService {
         result.put("birthTime", birthDateTime.format(DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH時")));
         result.put("birthPlace", birthPlace);
         
-        // 保存算命記錄
-        saveFortuneHistory(user, FortuneHistory.FortuneType.BAZI, 
-                         birthDateTime.toString() + "|" + birthPlace, analysis, score);
+        // 暫時禁用歷史記錄保存，避免資料庫事務錯誤
+        // saveFortuneHistory(user, FortuneHistory.FortuneType.BAZI, 
+        //                  birthDateTime.toString() + "|" + birthPlace, analysis, score);
         
         return result;
     }
@@ -120,8 +120,8 @@ public class FortuneService {
         System.out.println("🎯 最終結果 - 筆劃數: " + result.get("totalStrokes"));
         System.out.println("🎯 完整結果: " + result);
         
-        // 保存算命記錄
-        saveFortuneHistory(user, FortuneHistory.FortuneType.NAME, fullName, analysis, score);
+        // 暫時禁用歷史記錄保存，避免資料庫事務錯誤
+        // saveFortuneHistory(user, FortuneHistory.FortuneType.NAME, fullName, analysis, score);
         
         return result;
     }
@@ -152,10 +152,10 @@ public class FortuneService {
         result.put("healthScore", healthScore);
         result.put("suggestion", suggestion);
         
-        // 保存算命記錄
-        saveFortuneHistory(user, FortuneHistory.FortuneType.DAILY, 
-                zodiac + "|" + LocalDate.now(), suggestion, 
-                (loveScore + careerScore + wealthScore + healthScore) / 4);
+        // 暫時禁用歷史記錄保存，避免資料庫事務錯誤
+        // saveFortuneHistory(user, FortuneHistory.FortuneType.DAILY, 
+        //         zodiac + "|" + LocalDate.now(), suggestion, 
+        //         (loveScore + careerScore + wealthScore + healthScore) / 4);
         
         return result;
     }
@@ -405,15 +405,22 @@ public class FortuneService {
         return suggestion.toString();
     }
     
+    @SuppressWarnings("unused")
     private void saveFortuneHistory(User user, FortuneHistory.FortuneType type, 
                                    String inputData, String resultData, int score) {
-        FortuneHistory history = new FortuneHistory();
-        history.setUser(user);
-        history.setFortuneType(type);
-        history.setInputData(inputData);
-        history.setResultData(resultData);
-        history.setScore(score);
-        fortuneHistoryRepository.save(history);
+        try {
+            FortuneHistory history = new FortuneHistory();
+            history.setUser(user);
+            history.setFortuneType(type);
+            history.setInputData(inputData);
+            history.setResultData(resultData);
+            history.setScore(score);
+            fortuneHistoryRepository.save(history);
+            System.out.println("✅ 算命歷史記錄保存成功");
+        } catch (Exception e) {
+            // 暫時忽略歷史記錄保存失敗，不影響主要功能
+            System.err.println("⚠️ 算命歷史記錄保存失敗，但不影響算命結果: " + e.getMessage());
+        }
     }
     
     /**

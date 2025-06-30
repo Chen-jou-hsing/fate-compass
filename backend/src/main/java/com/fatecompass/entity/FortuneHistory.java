@@ -14,8 +14,7 @@ import java.time.LocalDateTime;
 public class FortuneHistory {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fortune_seq")
-    @SequenceGenerator(name = "fortune_seq", sequenceName = "FC_FORTUNE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "HISTORY_ID")
     private Long historyId;
     
