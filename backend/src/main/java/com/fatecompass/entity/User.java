@@ -18,7 +18,10 @@ import java.util.List;
 public class User {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "user_generator")
+    @TableGenerator(name = "user_generator", table = "FC_ID_GENERATOR",
+                   pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL",
+                   pkColumnValue = "user", initialValue = 1, allocationSize = 1)
     @Column(name = "USER_ID")
     private Long userId;
     
