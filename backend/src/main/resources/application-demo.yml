@@ -1,0 +1,71 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: fate-compass-backend
+  
+  # Oracle Database Configuration
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
+    username: fatecompass
+    password: fatecompass123
+    driver-class-name: oracle.jdbc.OracleDriver
+  
+
+    
+  # JPA Configuration for Oracle
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: validate  # 不自動建表，使用我們的SQL腳本
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        
+  # Security Configuration
+  security:
+    jwt:
+      secret: fate-compass-secret-key-for-jwt-token-generation-2024
+      expiration: 86400000 # 24 hours in milliseconds
+
+# CORS Configuration
+cors:
+  allowed-origins: 
+    - http://localhost:3000
+    - http://localhost:8081
+    - http://127.0.0.1:3000
+    - http://127.0.0.1:8081
+    - http://127.0.0.1:5500
+    - http://localhost:5500
+  allowed-methods: 
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+
+# Logging Configuration
+logging:
+  level:
+    com.fatecompass: INFO
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Management Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always 

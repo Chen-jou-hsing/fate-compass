@@ -1,0 +1,362 @@
+/* 自定義樣式 */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --dark-color: #343a40;
+    --light-color: #f8f9fa;
+}
+
+body {
+    font-family: 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+/* 導航欄樣式 */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+/* 主要內容區域 */
+main {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+    padding: 2rem;
+}
+
+/* 頁面切換動畫 */
+.page-content {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 卡片樣式 */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+/* 服務卡片特殊樣式 */
+.service-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.service-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.service-card .card-body {
+    padding: 2rem;
+}
+
+.service-card i {
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover i {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* 按鈕樣式 */
+.btn {
+    border-radius: 25px;
+    padding: 0.7rem 2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+}
+
+/* 表單樣式 */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 0.7rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Hero Section */
+.hero-section {
+    border-radius: 20px;
+    margin: -2rem -2rem 2rem -2rem;
+    padding: 4rem 2rem !important;
+}
+
+.hero-section h1 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 結果顯示區域 */
+.result-card {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-left: 5px solid var(--primary-color);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.result-title {
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.result-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.score-display {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--success-color);
+    text-align: center;
+    margin: 1rem 0;
+}
+
+/* 歷史記錄樣式 */
+.history-item {
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: white;
+    border-radius: 0 10px 10px 0;
+    transition: all 0.3s ease;
+}
+
+.history-item:hover {
+    background: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.history-date {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+.history-type {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+/* 運勢分數條 */
+.score-bar {
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.score-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.8s ease;
+}
+
+.score-fill.excellent {
+    background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+.score-fill.good {
+    background: linear-gradient(90deg, #ffc107, #fd7e14);
+}
+
+.score-fill.average {
+    background: linear-gradient(90deg, #6c757d, #495057);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    main {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    .hero-section {
+        margin: -1rem -1rem 1rem -1rem;
+        padding: 2rem 1rem !important;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .service-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.5rem;
+    }
+}
+
+/* 載入動畫 */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 提示訊息樣式 */
+.alert {
+    border-radius: 15px;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+    color: #0c5460;
+}
+
+/* 頁腳樣式 */
+footer {
+    background: var(--dark-color) !important;
+    margin-top: auto;
+}
+
+/* 特殊效果 */
+.glow {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 滾動條樣式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+} 

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算命網站 - Fate Compass</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- 自定義樣式 -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showHome()">
+                <i class="fas fa-compass me-2"></i>算命網站
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showHome()">
+                            <i class="fas fa-home me-1"></i>首頁
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showBaZi()">
+                            <i class="fas fa-yin-yang me-1"></i>生辰八字
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showNameFortune()">
+                            <i class="fas fa-signature me-1"></i>姓名算命
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showDailyFortune()">
+                            <i class="fas fa-calendar-day me-1"></i>每日運勢
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav" id="userNav">
+                    <!-- 未登錄狀態 -->
+                    <li class="nav-item" id="loginBtn">
+                        <a class="nav-link" href="#" onclick="showLogin()">
+                            <i class="fas fa-sign-in-alt me-1"></i>登錄
+                        </a>
+                    </li>
+                    <li class="nav-item" id="registerBtn">
+                        <a class="nav-link" href="#" onclick="showRegister()">
+                            <i class="fas fa-user-plus me-1"></i>註冊
+                        </a>
+                    </li>
+                    
+                    <!-- 已登錄狀態 -->
+                    <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i><span id="usernameDisplay"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-1"></i>登出
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容區域 -->
+    <main class="container mt-5 pt-4">
+        <!-- 首頁 -->
+        <div id="homePage" class="page-content">
+            <div class="hero-section text-center py-5">
+                <div class="container">
+                    <h1 class="display-4 text-primary mb-4">
+                        <i class="fas fa-magic me-3"></i>歡迎來到算命網站
+                    </h1>
+                    <p class="lead mb-4">探索您的命運，了解未來的可能性</p>
+                    <div class="row g-4 mt-5">
+                        <div class="col-md-4">
+                            <div class="card service-card h-100" onclick="showBaZi()">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-yin-yang fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">生辰八字</h5>
+                                    <p class="card-text">根據出生年月日時分析命理運勢</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card service-card h-100" onclick="showNameFortune()">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-signature fa-3x text-success mb-3"></i>
+                                    <h5 class="card-title">姓名算命</h5>
+                                    <p class="card-text">基於姓名筆劃和五行的命理分析</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card service-card h-100" onclick="showDailyFortune()">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-calendar-day fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">每日運勢</h5>
+                                    <p class="card-text">查看今日的運勢和建議</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 登錄頁面 -->
+        <div id="loginPage" class="page-content" style="display: none;">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h4><i class="fas fa-sign-in-alt me-2"></i>用戶登錄</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label class="form-label">用戶名或電子郵件</label>
+                                    <input type="text" class="form-control" id="loginId" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">密碼</label>
+                                    <input type="password" class="form-control" id="loginPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-sign-in-alt me-1"></i>登錄
+                                </button>
+                            </form>
+                            <div class="text-center mt-3">
+                                <a href="#" onclick="showRegister()">還沒有帳號？立即註冊</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 註冊頁面 -->
+        <div id="registerPage" class="page-content" style="display: none;">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <h4><i class="fas fa-user-plus me-2"></i>用戶註冊</h4>
+                        </div>
+                        <div class="card-body">
+                            <form id="registerForm">
+                                <div class="mb-3">
+                                    <label class="form-label">用戶名</label>
+                                    <input type="text" class="form-control" id="registerUsername" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">電子郵件</label>
+                                    <input type="email" class="form-control" id="registerEmail" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">密碼</label>
+                                    <input type="password" class="form-control" id="registerPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-user-plus me-1"></i>註冊
+                                </button>
+                            </form>
+                            <div class="text-center mt-3">
+                                <a href="#" onclick="showLogin()">已有帳號？立即登錄</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 生辰八字頁面 -->
+        <div id="baziPage" class="page-content" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-yin-yang me-2"></i>生辰八字算命</h4>
+                </div>
+                <div class="card-body">
+                    <form id="baziForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">出生日期</label>
+                                    <input type="date" class="form-control" id="birthDate" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">出生時間</label>
+                                    <input type="time" class="form-control" id="birthTime" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">出生地點</label>
+                            <input type="text" class="form-control" id="birthPlace" placeholder="例：台北市">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-magic me-1"></i>開始算命
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div id="baziResult" class="mt-4" style="display: none;"></div>
+        </div>
+
+        <!-- 姓名算命頁面 -->
+        <div id="namefortunePage" class="page-content" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-signature me-2"></i>姓名算命</h4>
+                </div>
+                <div class="card-body">
+                    <form id="nameFortuneForm">
+                        <div class="mb-3">
+                            <label class="form-label">您的姓名</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="請輸入您的完整姓名" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-magic me-1"></i>開始算命
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div id="nameFortuneResult" class="mt-4" style="display: none;"></div>
+        </div>
+
+        <!-- 每日運勢頁面 -->
+        <div id="dailyFortunePage" class="page-content" style="display: none;">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-calendar-day me-2"></i>每日運勢</h4>
+                </div>
+                <div class="card-body">
+                    <form id="dailyFortuneForm">
+                        <div class="mb-3">
+                            <label class="form-label">選擇您的生肖</label>
+                            <select class="form-select" id="zodiacSelect" required>
+                                <option value="">請選擇生肖</option>
+                                <option value="鼠">鼠</option>
+                                <option value="牛">牛</option>
+                                <option value="虎">虎</option>
+                                <option value="兔">兔</option>
+                                <option value="龍">龍</option>
+                                <option value="蛇">蛇</option>
+                                <option value="馬">馬</option>
+                                <option value="羊">羊</option>
+                                <option value="猴">猴</option>
+                                <option value="雞">雞</option>
+                                <option value="狗">狗</option>
+                                <option value="豬">豬</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="fas fa-magic me-1"></i>查看今日運勢
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div id="dailyFortuneResult" class="mt-4" style="display: none;"></div>
+        </div>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="bg-dark text-light text-center py-4 mt-5">
+        <div class="container">
+            <p>Copyright &copy; 2025 Fate Compass. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- 自定義JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html> 

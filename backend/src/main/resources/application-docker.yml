@@ -1,0 +1,112 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: fate-compass-backend
+  
+  # Jackson時區設置
+  jackson:
+    time-zone: Asia/Taipei
+  
+  # Oracle Database Configuration for Docker
+  datasource:
+    url: jdbc:oracle:thin:@${DB_HOST:oracle-db}:${DB_PORT:1521}:${DB_NAME:XE}
+    username: ${DB_USERNAME:system}
+    password: ${DB_PASSWORD:oracle123}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 60000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      validation-timeout: 5000
+      leak-detection-threshold: 60000
+      connection-init-sql: SELECT 1 FROM DUAL
+      data-source-properties:
+        oracle.net.CONNECT_TIMEOUT: 60000
+        oracle.jdbc.ReadTimeout: 60000
+    
+  # JPA Configuration for Oracle with retry
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: create-drop  # 自動建表，簡化部署
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+        connection:
+          acquisition_timeout: 60000
+    defer-datasource-initialization: true
+    
+  # SQL初始化配置
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+        
+  # Security Configuration
+  security:
+    jwt:
+      secret: fate-compass-secret-key-for-jwt-token-generation-2024-docker
+      expiration: 86400000 # 24 hours in milliseconds
+
+# cnchar微服務配置
+cnchar:
+  service:
+    url: ${CNCHAR_SERVICE_URL:http://localhost:3001}
+
+# CORS Configuration for Docker
+cors:
+  allowed-origins: 
+    - http://localhost
+    - http://localhost:80
+    - http://127.0.0.1
+    - http://127.0.0.1:80
+    - http://fate-compass-frontend
+  allowed-methods: 
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+
+# Logging Configuration
+logging:
+  level:
+    com.fatecompass: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /app/logs/fate-compass.log
+    max-size: 10MB
+    max-history: 30
+
+# Management Endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+  endpoint:
+    health:
+      show-details: always
+  health:
+    db:
+      enabled: true 

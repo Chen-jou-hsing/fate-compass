@@ -1,0 +1,22 @@
+{
+  "name": "cnchar-stroke-service",
+  "version": "1.0.0",
+  "description": "繁體中文筆劃計算微服務，使用cnchar庫",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cnchar": "^3.2.0",
+    "cnchar-trad": "^3.2.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["cnchar", "chinese", "stroke", "traditional"],
+  "author": "fate-compass",
+  "license": "MIT"
+} 

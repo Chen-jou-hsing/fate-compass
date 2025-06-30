@@ -1,0 +1,102 @@
+# ================================
+# Docker 相關文件 (不推送到Git)
+# ================================
+docker-compose.yml
+docker-compose.*.yml
+Dockerfile
+.dockerignore
+*.sh
+restart-system.sh
+wait-for-oracle.sh
+
+# ================================
+# IDE 和編輯器配置
+# ================================
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+*~
+
+# ================================
+# Java/Maven 相關
+# ================================
+backend/target/
+backend/logs/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+*.class
+*.jar
+*.war
+*.ear
+*.log
+
+# ================================
+# Node.js 相關  
+# ================================
+cnchar-service/node_modules/
+cnchar-service/npm-debug.log*
+cnchar-service/yarn-debug.log*
+cnchar-service/yarn-error.log*
+cnchar-service/package-lock.json
+cnchar-service/yarn.lock
+
+# ================================
+# 前端相關
+# ================================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# ================================
+# 資料庫相關
+# ================================
+*.db
+*.sqlite
+*.db-journal
+
+# ================================
+# 作業系統生成的文件
+# ================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ================================
+# 臨時文件和日誌
+# ================================
+*.tmp
+*.temp
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# ================================
+# 環境配置文件 (敏感資訊)
+# ================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ================================
+# 其他
+# ================================
+*.bak
+*.backup
+*.orig 
