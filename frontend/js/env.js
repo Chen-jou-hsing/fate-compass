@@ -21,10 +21,10 @@ window.ENV = window.ENV || (function() {
             DEBUG: true
         },
         
-        // Vercel 部署環境 (需要替換為實際的 Zeabur 後端地址)
+        // Vercel 部署環境 (實際的 Zeabur 後端地址)
         'default_vercel': {
-            API_BASE_URL: 'https://backend-xxx.zeabur.app/api',
-            CNCHAR_API_URL: 'https://cnchar-service-xxx.zeabur.app',
+            API_BASE_URL: 'https://fate-compass.zeabur.app/api',
+            CNCHAR_API_URL: 'https://cnchar.zeabur.app',
             NODE_ENV: 'production',
             DEBUG: false
         }

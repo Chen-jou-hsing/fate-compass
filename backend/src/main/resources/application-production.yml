@@ -2,19 +2,36 @@ server:
   port: ${SERVER_PORT:8080}
   servlet:
     context-path: ${CONTEXT_PATH:/api}
+  # 增加容錯配置
+  shutdown: graceful
+  tomcat:
+    connection-timeout: 60000  # 60秒連接超時
+    threads:
+      max: 200
+      min-spare: 10
 
 spring:
   application:
     name: fate-compass-backend
   
-  # Oracle Database Configuration - 生產環境
+  # Oracle Database Configuration - 生產環境 + 容錯優化
   datasource:
     url: ${DATABASE_URL:jdbc:oracle:thin:@localhost:1521:XE}
     username: ${DATABASE_USERNAME:fate_compass}
     password: ${DATABASE_PASSWORD:oracle123}
     driver-class-name: oracle.jdbc.OracleDriver
+    # 連接池優化
+    hikari:
+      connection-timeout: 60000       # 60秒連接超時
+      idle-timeout: 300000           # 5分鐘閒置超時
+      max-lifetime: 900000           # 15分鐘最大生命週期
+      maximum-pool-size: 10          # 最大連接數
+      minimum-idle: 2                # 最小閒置連接
+      leak-detection-threshold: 60000 # 連接洩漏檢測
+      validation-timeout: 30000      # 驗證超時
+      connection-test-query: SELECT 1 FROM DUAL
     
-  # JPA Configuration - 生產環境優化
+  # JPA Configuration - 生產環境優化 + 容錯
   jpa:
     database-platform: org.hibernate.dialect.OracleDialect
     hibernate:
@@ -25,6 +42,12 @@ spring:
     properties:
       hibernate:
         format_sql: false
+        # 增加容錯配置
+        connection:
+          provider_disables_autocommit: true
+        jdbc:
+          batch_size: 20
+          fetch_size: 50
         
   # Security Configuration
   security:
@@ -32,11 +55,18 @@ spring:
       secret: ${JWT_SECRET:fate-compass-secret-key-for-jwt-token-generation-2024}
       expiration: ${JWT_EXPIRATION:86400000} # 24 hours
 
-# cnchar微服務配置
+  # 健康檢查優化
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+# cnchar微服務配置 + 重試機制
 cnchar:
   service:
     url: ${CNCHAR_SERVICE_URL:http://localhost:3001}
-    timeout: ${CNCHAR_TIMEOUT:5000}
+    timeout: ${CNCHAR_TIMEOUT:10000}
+    retry:
+      max-attempts: 3
+      delay: 2000
 
 # CORS Configuration - 生產環境
 cors:
@@ -52,21 +82,48 @@ logging:
     org.springframework.security: WARN
     org.hibernate.SQL: WARN
     root: ${ROOT_LOG_LEVEL:WARN}
+    # 資料庫相關日誌
+    com.zaxxer.hikari: ${HIKARI_LOG_LEVEL:WARN}
+    org.springframework.jdbc: ${JDBC_LOG_LEVEL:WARN}
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
     name: ${LOG_FILE:logs/fate-compass.log}
 
-# Management Endpoints - 生產環境限制
+# Management Endpoints - 健康檢查優化
 management:
   endpoints:
     web:
       exposure:
-        include: ${MANAGEMENT_ENDPOINTS:health,info}
+        include: ${MANAGEMENT_ENDPOINTS:health,info,metrics}
       base-path: ${MANAGEMENT_BASE_PATH:/actuator}
   endpoint:
     health:
       show-details: ${HEALTH_SHOW_DETAILS:when-authorized}
+      # 健康檢查優化
+      probes:
+        enabled: true
+      cache:
+        time-to-live: 10s
+  health:
+    # 資料庫健康檢查容錯
+    db:
+      enabled: true
+    # 如果資料庫暫時不可用，不要立即標記為DOWN
+    defaults:
+      enabled: false
+  # 優雅關閉
   security:
-    enabled: true 
+    enabled: false  # 生產環境可考慮啟用
+
+# 應用程式級別容錯配置
+app:
+  database:
+    retry:
+      max-attempts: ${DB_RETRY_MAX_ATTEMPTS:5}
+      delay: ${DB_RETRY_DELAY:5000}
+      multiplier: ${DB_RETRY_MULTIPLIER:2}
+  startup:
+    timeout: ${STARTUP_TIMEOUT:120}  # 120秒啟動超時
+    health-check-grace-period: ${HEALTH_CHECK_GRACE_PERIOD:60}  # 60秒健康檢查寬限期 
