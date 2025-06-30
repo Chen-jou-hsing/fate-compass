@@ -7,6 +7,10 @@
       "use": "@vercel/static"
     }
   ],
+  "env": {
+    "VITE_API_BASE_URL": "https://fate-compass.zeabur.app/api",
+    "VITE_CNCHAR_API_URL": "https://cnchar.zeabur.app"
+  },
   "headers": [
     {
       "source": "/(.*)",

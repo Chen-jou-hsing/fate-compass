@@ -1,7 +1,11 @@
 // 應用配置 - 支援環境變數配置
 const APP_CONFIG = {
-    API_BASE_URL: window.ENV?.API_BASE_URL || 'http://localhost:8080/api',
-    CNCHAR_API_URL: window.ENV?.CNCHAR_API_URL || 'http://localhost:3001',
+    API_BASE_URL: window.ENV?.API_BASE_URL || 
+                  (typeof process !== 'undefined' && process.env?.VITE_API_BASE_URL) ||
+                  (window.location.hostname.includes('vercel.app') ? 'https://fate-compass.zeabur.app/api' : 'http://localhost:8080/api'),
+    CNCHAR_API_URL: window.ENV?.CNCHAR_API_URL || 
+                    (typeof process !== 'undefined' && process.env?.VITE_CNCHAR_API_URL) ||
+                    (window.location.hostname.includes('vercel.app') ? 'https://cnchar.zeabur.app' : 'http://localhost:3001'),
     USER_KEY: 'fate_compass_user'
 };
 
